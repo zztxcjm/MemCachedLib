@@ -23,7 +23,7 @@ namespace MemCachedLib.Test
             {
                 if (!client.TryGet("A", out val))
                 {
-                    client.Set("A", "中华人民共和国", TimeSpan.FromSeconds(100));
+                    client.Set("A", "中华人民共和国"+DateTime.Now.Ticks, TimeSpan.FromSeconds(100));
                 }
                 Console.WriteLine(val);
             }

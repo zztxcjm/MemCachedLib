@@ -5,6 +5,7 @@ namespace MemCachedLib
 	internal class ResponseHeader
 	{
 		private ByteBuilder builder;
+		private OprationStatus status;
 
 		public OpCodes OpCode
 		{
@@ -34,7 +35,15 @@ namespace MemCachedLib
 		{
 			get
 			{
-				return (OprationStatus)this.builder.ToInt16(6);
+				if (builder != null)
+				{
+					status = (OprationStatus)this.builder.ToInt16(6);
+				}
+				return status;
+			}
+			set
+			{
+				this.status = value;
 			}
 		}
 
@@ -76,5 +85,10 @@ namespace MemCachedLib
 		{
 			this.builder = new ByteBuilder(binary);
 		}
+
+		public ResponseHeader()
+		{
+		}
+
 	}
 }

@@ -80,39 +80,70 @@ namespace MemCachedLib
 			return this.Sends(request).FirstOrDefault<ResponseHeader>();
 		}
 
-		public IEnumerable<ResponseHeader> Sends(RequestHeader request)
+		public IEnumerable<ResponseHeader> Sends(RequestHeader request, int trycount = 1)
 		{
-			if (this.socket == null)
+			try
 			{
-				this.socket = new Socket(this.ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-			}
-			if (!this.socket.Connected)
-			{
-				this.socket.Connect(this.ipEndPoint);
-			}
-			this.socket.Send(request.ToByteArray());
-			this.byteBuilder.Clear();
-			List<ResponseHeader> responseList = new List<ResponseHeader>();
-			while (true)
-			{
-				int readByte = this.socket.Receive(this.socketBuffer);
-				this.byteBuilder.Add(this.socketBuffer, 0, readByte);
-				while (this.byteBuilder.Length >= 12)
+				//重复尝试连接
+				if (trycount >= Setting.TryConnectMaxCount)
 				{
-					int packetLength;
-					if ((packetLength = this.byteBuilder.ToInt32(8) + 24) > this.byteBuilder.Length)
+					throw new ConnectTimeoutException();
+				}
+				//非首次请求，需要等待1s在继续
+				if (trycount > 1)
+				{
+					System.Threading.Thread.Sleep(1000);
+				}
+
+				if (this.socket == null)
+				{
+					this.socket = new Socket(this.ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+				}
+				if (!this.socket.Connected)
+				{
+					this.socket.Connect(this.ipEndPoint);
+				}
+				this.socket.Send(request.ToByteArray());
+				this.byteBuilder.Clear();
+				List<ResponseHeader> responseList = new List<ResponseHeader>();
+				while (true)
+				{
+					int readByte = this.socket.Receive(this.socketBuffer);
+					this.byteBuilder.Add(this.socketBuffer, 0, readByte);
+					while (this.byteBuilder.Length >= 12)
 					{
-						break;
-					}
-					byte[] packetBytes = this.byteBuilder.ReadRange(packetLength);
-					ResponseHeader response = new ResponseHeader(packetBytes);
-					responseList.Add(response);
-					if (response.OpCode != OpCodes.Stat || packetLength == 24 || response.Status != OprationStatus.No_Error)
-					{
-						return responseList;
+						int packetLength;
+						if ((packetLength = this.byteBuilder.ToInt32(8) + 24) > this.byteBuilder.Length)
+						{
+							break;
+						}
+						byte[] packetBytes = this.byteBuilder.ReadRange(packetLength);
+						ResponseHeader response = new ResponseHeader(packetBytes);
+						responseList.Add(response);
+						if (response.OpCode != OpCodes.Stat || packetLength == 24 || response.Status != OprationStatus.No_Error)
+						{
+							return responseList;
+						}
 					}
 				}
 			}
+			catch (SocketException)
+			{
+				if (this.socket != null)
+				{
+					try
+					{
+						this.socket.Close();
+						this.socket.Dispose();
+						this.socket = null;
+					}
+					catch (Exception)
+					{
+					}
+				}
+				return this.Sends(request, trycount++);
+			}
+
 		}
 
 		public void Dispose()

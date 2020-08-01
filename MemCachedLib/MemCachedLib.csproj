@@ -62,6 +62,7 @@
     <Compile Include="MemCachedLib\CachedClient.cs" />
     <Compile Include="MemCachedLib\CachedClientPool.cs" />
     <Compile Include="MemCachedLib\CachedReault.cs" />
+    <Compile Include="MemCachedLib\ConnectTimeoutException.cs" />
     <Compile Include="MemCachedLib\DataTooLargeException.cs" />
     <Compile Include="MemCachedLib\OpCodes.cs" />
     <Compile Include="MemCachedLib\OprationStatus.cs" />

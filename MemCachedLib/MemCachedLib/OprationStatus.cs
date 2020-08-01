@@ -19,6 +19,7 @@ namespace MemCachedLib
 		Not_Supported,
 		Internal_Error,
 		Busy,
-		Temporary_Failure
+		Temporary_Failure,
+		NetworkException_HostNotAvailable
 	}
 }
