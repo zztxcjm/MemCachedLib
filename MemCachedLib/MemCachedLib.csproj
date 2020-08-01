@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{41777A62-2D06-4CCD-A6D1-59DDB61770BA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MemCachedLib</RootNamespace>
+    <AssemblyName>Handday.MemCachedLib</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MemCachedLib.Cached\ConsistentHash.cs" />
+    <Compile Include="MemCachedLib.Cached\HashAlgorithm.cs" />
+    <Compile Include="MemCachedLib.Cached\MemCached.cs" />
+    <Compile Include="MemCachedLib.Cached\MemCachedEx.cs" />
+    <Compile Include="MemCachedLib.Request\DeleteRequest.cs" />
+    <Compile Include="MemCachedLib.Request\FlushRequest.cs" />
+    <Compile Include="MemCachedLib.Request\GATRequest.cs" />
+    <Compile Include="MemCachedLib.Request\GetRequest.cs" />
+    <Compile Include="MemCachedLib.Request\StatRequest.cs" />
+    <Compile Include="MemCachedLib.Request\StoreRequest.cs" />
+    <Compile Include="MemCachedLib.Request\TouchReqeuest.cs" />
+    <Compile Include="MemCachedLib.Request\VersionRequest.cs" />
+    <Compile Include="MemCachedLib.Session\MemSessionProvider.cs" />
+    <Compile Include="MemCachedLib.Session\SessionItem.cs" />
+    <Compile Include="MemCachedLib.Session\SessionSerializer.cs" />
+    <Compile Include="MemCachedLib\ByteBuilder.cs" />
+    <Compile Include="MemCachedLib\CachedClient.cs" />
+    <Compile Include="MemCachedLib\CachedClientPool.cs" />
+    <Compile Include="MemCachedLib\CachedReault.cs" />
+    <Compile Include="MemCachedLib\DataTooLargeException.cs" />
+    <Compile Include="MemCachedLib\OpCodes.cs" />
+    <Compile Include="MemCachedLib\OprationStatus.cs" />
+    <Compile Include="MemCachedLib\RequestHeader.cs" />
+    <Compile Include="MemCachedLib\ResponseHeader.cs" />
+    <Compile Include="MemCachedLib\Setting.cs" />
+    <Compile Include="MemCachedLib\StatItems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
